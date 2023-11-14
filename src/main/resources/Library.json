@@ -1,0 +1,52 @@
+{
+  "albums" : [
+    {
+      "md" : {
+        "name" : "Album cinstit",
+        "dateOfCreation" : "10/10/1010",
+        "description" : "album description ex"
+      },
+      "songList" : [
+        {
+          "songMD" : {
+            "name" : "Diablo",
+            "length" : 3.14
+          }
+        },
+        {
+          "songMD" : {
+            "name" : "Test song",
+            "length" : 4.53
+          }
+        }
+      ],
+      "creator" : {
+        "userMD" : {
+          "name" : "Killa Fonic"
+        }
+      }
+    }
+  ],
+  "playlists" : [
+    {
+      "md" : {
+        "name" : "Custom Playlist",
+        "dateOfCreation" : "09/10/2013",
+        "description" : "playlist description ex"
+      },
+      "songList" : [
+        {
+          "songMD" : {
+            "name" : "Test",
+            "length" : 2.16
+          }
+        }
+      ],
+      "creator" : {
+        "userMD" : {
+          "name" : "Cabron"
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,24 @@
+{
+  "userList" : [
+    {
+      "userMD" : {
+        "name" : "Denis",
+        "description" : "example of description"
+      },
+      "credentials" : {
+        "username" : "default_user",
+        "password" : "password"
+      }
+    },
+    {
+      "userMD" : {
+        "name" : "Killa Fonic",
+        "description" : "very versatile artist"
+      },
+      "credentials" : {
+        "username" : "artist",
+        "password" : "complicated_password"
+      }
+    }
+  ]
+}
