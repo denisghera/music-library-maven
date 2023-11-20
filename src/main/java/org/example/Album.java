@@ -15,6 +15,7 @@ public class Album implements Playable, Comparable<Album>{
         this.md = new Metadata();
         this.songList = new ArrayList<>();
         this.creator = new User();
+        computeTotalLength();
     }
 
     public Album(Metadata md, User creator, List<Song> songList) {
@@ -25,13 +26,13 @@ public class Album implements Playable, Comparable<Album>{
     }
 
     int getNumberOfTracks() { return songList.size(); }
-    public String getName() { return this.md.name; }
+    public String getName() { return this.md.getName(); }
 
     void printTracks() {
         System.out.println(this.md.name + " has the following tracks:");
         int i = 1;
         for(Song s : songList) {
-            System.out.println(i + ": " + s.songMD.name + " (" + s.songMD.formattedLength(s.songMD.length) + ")");
+            System.out.println(i + ": " + s.songMD.getName() + " (" + s.songMD.formattedLength(s.songMD.getLength()) + ")");
             i++;
         }
     }
@@ -39,8 +40,8 @@ public class Album implements Playable, Comparable<Album>{
     void computeTotalLength() {
         int minutes = 0, seconds = 0;
         for(Song s : this.songList) { // Compute total amount of minutes and seconds separately
-            minutes += (int)s.songMD.length;
-            seconds += (int) (s.songMD.length * 100 % 100);
+            minutes += (int)s.songMD.getLength();
+            seconds += (int) (s.songMD.getLength() * 100 % 100);
         }
         if(seconds > 60)  { // Transform seconds in minutes and seconds
             minutes += seconds / 60;
@@ -49,13 +50,16 @@ public class Album implements Playable, Comparable<Album>{
         else this.md.length = minutes + ((double) seconds / 100);
     }
 
+    void addTrack(Song s) {
+        this.songList.add(s);
+    }
+
     void printMetadata() {
-        System.out.println("Type: " + getClass().getName());
-        System.out.println("Name: " + md.name);
-        System.out.println("Creator: " + creator.userMD.name);
-        System.out.println("Date of creation: " + md.dateOfCreation);
-        System.out.println("Length: " + md.formattedLength(md.length));
-        System.out.println("Description: " + md.description);
+        System.out.println("Name: " + getName());
+        System.out.println("Creator: " + creator.getUserMD().getName());
+        System.out.println("Date of creation: " + md.getDateOfCreation());
+        System.out.println("Length: " + md.formattedLength(md.getLength()));
+        System.out.println("Description: " + md.getDescription());
         System.out.println();
     }
 
@@ -67,7 +71,7 @@ public class Album implements Playable, Comparable<Album>{
         if(this.getNumberOfTracks() > a.getNumberOfTracks()) return 1;
         else if(this.getNumberOfTracks() < a.getNumberOfTracks()) return -1;
         else {
-            return Integer.compare(this.md.name.compareTo(a.md.name), 0);
+            return Integer.compare(this.md.getName().compareTo(a.md.getName()), 0);
         }
     }
 }

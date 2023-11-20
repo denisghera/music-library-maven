@@ -20,7 +20,6 @@ public class User {
     }
 
     void printMetadata() {
-        System.out.println("Type: " + getClass().getName());
         System.out.println("Name: " + userMD.name);
         System.out.println("Description: " + userMD.description);
         System.out.println();

@@ -18,7 +18,6 @@ public class Song implements Playable, Downloadable, Comparable<Song> {
     public String getName() { return this.songMD.name; }
 
     void printMetadata() {
-        System.out.println("Type: " + getClass().getName());
         System.out.println("Name: " + songMD.name);
         System.out.println("Length: " + songMD.formattedLength(songMD.length));
         System.out.println();

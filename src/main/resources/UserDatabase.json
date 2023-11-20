@@ -1,24 +1,30 @@
 {
-  "userList" : [
-    {
-      "userMD" : {
-        "name" : "Denis",
-        "description" : "example of description"
-      },
-      "credentials" : {
-        "username" : "default_user",
-        "password" : "password"
-      }
+  "userList" : [ {
+    "userMD" : {
+      "name" : "Denis",
+      "description" : "example of description"
     },
-    {
-      "userMD" : {
-        "name" : "Killa Fonic",
-        "description" : "very versatile artist"
-      },
-      "credentials" : {
-        "username" : "artist",
-        "password" : "complicated_password"
-      }
+    "credentials" : {
+      "username" : "default_user",
+      "password" : "password"
     }
-  ]
+  }, {
+    "userMD" : {
+      "name" : "Killa Fonic",
+      "description" : "very versatile artist"
+    },
+    "credentials" : {
+      "username" : "artist",
+      "password" : "complicated_password"
+    }
+  }, {
+    "userMD" : {
+      "name" : "Cabron",
+      "description" : "testing user"
+    },
+    "credentials" : {
+      "username" : "user123",
+      "password" : "alabala"
+    }
+  } ]
 }

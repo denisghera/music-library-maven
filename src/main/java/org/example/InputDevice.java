@@ -1,8 +1,9 @@
 package org.example;
+import com.fasterxml.jackson.core.exc.StreamReadException;
+import com.fasterxml.jackson.databind.DatabindException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-import java.io.File;
-import java.io.InputStream;
+import java.io.*;
 import java.util.Scanner;
 
 public class InputDevice{
@@ -12,40 +13,44 @@ public class InputDevice{
         this.is = is;
         scan = new Scanner(is);
     }
-
     public String read() {
         try {
             if (scan.hasNextLine()) {
                 return scan.nextLine();
             }
         } catch(Exception e) {
-            e.printStackTrace();
+            System.out.println("Problem reading user's input!");
         }
         return null;
     }
-
     public Library fetchLibrary(String folderName) {
         Library library = new Library();
         try {
             File libraryFile = new File(folderName + "Library.json");
             ObjectMapper objectMapper = new ObjectMapper();
             library = objectMapper.readValue(libraryFile, Library.class);
+        } catch (FileNotFoundException e) {
+            System.out.println("Library file not found!");
+        } catch (IOException e) {
+            System.out.println("Problem reading from library file!");
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while fetching library information!");
         }
         return library;
     }
-
     public UserDatabase fetchUserDatabase(String folderName) {
         UserDatabase userDatabase = new UserDatabase();
         try {
             File userbaseFile = new File(folderName + "UserDatabase.json");
             ObjectMapper objectMapper = new ObjectMapper();
             userDatabase = objectMapper.readValue(userbaseFile, UserDatabase.class);
+        } catch (FileNotFoundException e) {
+            System.out.println("UserDatabase file not found!");
+        } catch (IOException e) {
+            System.out.println("Problem reading from user database file!");
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("An error occurred while fetching user database!");
         }
         return userDatabase;
     }
-
 }
