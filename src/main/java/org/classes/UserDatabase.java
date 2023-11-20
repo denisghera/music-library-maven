@@ -1,4 +1,4 @@
-package org.example;
+package org.classes;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -7,7 +7,7 @@ import java.util.List;
 
 @Getter @Setter
 public class UserDatabase {
-    List<User> userList;
+    public List<User> userList;
 
     public UserDatabase() { this.userList = new ArrayList<>(); }
     public UserDatabase(List<User> userList) {

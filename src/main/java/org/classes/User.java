@@ -1,4 +1,4 @@
-package org.example;
+package org.classes;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,8 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class User {
-    Metadata userMD;
-    Credentials credentials;
+    public Metadata userMD;
+    public Credentials credentials;
 
     public User(Metadata userMD, Credentials credentials) {
         this.credentials = credentials;
@@ -19,7 +19,7 @@ public class User {
         this.credentials = new Credentials();
     }
 
-    void printMetadata() {
+    public void printMetadata() {
         System.out.println("Name: " + userMD.name);
         System.out.println("Description: " + userMD.description);
         System.out.println();

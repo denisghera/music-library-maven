@@ -1,4 +1,4 @@
-package org.example;
+package org.interfaces;
 public interface Playable {
     void play();
     void pause();

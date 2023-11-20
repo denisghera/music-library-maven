@@ -1,5 +1,8 @@
-package org.example;
-public class Artist extends User implements Downloadable{
+package org.classes;
+
+import org.interfaces.Downloadable;
+
+public class Artist extends User implements Downloadable {
     public Artist(Metadata userMD, Credentials credentials) {
         super(userMD, credentials);
     }

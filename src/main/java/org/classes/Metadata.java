@@ -1,4 +1,4 @@
-package org.example;
+package org.classes;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,10 +6,10 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Metadata {
-    String name;
-    String dateOfCreation;
-    String description;
-    double length;
+    public String name;
+    public String dateOfCreation;
+    public String description;
+    public double length;
 
     //Album or Playlist
     public Metadata(String name, String dateOfCreation, String description) {

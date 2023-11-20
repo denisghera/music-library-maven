@@ -1,4 +1,4 @@
-package org.example;
+package org.classes;
 
 import lombok.Getter;
 import lombok.Setter;
@@ -6,8 +6,8 @@ import lombok.Setter;
 @Getter
 @Setter
 public class Credentials {
-    String username;
-    String password;
+    public String username;
+    public String password;
 
     public Credentials() {
         this.username = "";

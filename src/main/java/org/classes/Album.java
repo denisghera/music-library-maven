@@ -1,15 +1,16 @@
-package org.example;
+package org.classes;
 import lombok.Getter;
 import lombok.Setter;
+import org.interfaces.Playable;
 
 import java.util.ArrayList;
 import java.util.List;
 
 @Getter @Setter
 public class Album implements Playable, Comparable<Album>{
-    Metadata md;
-    List<Song> songList;
-    User creator;
+    public Metadata md;
+    public List<Song> songList;
+    public User creator;
 
     public Album() {
         this.md = new Metadata();
@@ -28,7 +29,7 @@ public class Album implements Playable, Comparable<Album>{
     int getNumberOfTracks() { return songList.size(); }
     public String getName() { return this.md.getName(); }
 
-    void printTracks() {
+    public void printTracks() {
         System.out.println(this.md.name + " has the following tracks:");
         int i = 1;
         for(Song s : songList) {
@@ -37,7 +38,7 @@ public class Album implements Playable, Comparable<Album>{
         }
     }
 
-    void computeTotalLength() {
+    public void computeTotalLength() {
         int minutes = 0, seconds = 0;
         for(Song s : this.songList) { // Compute total amount of minutes and seconds separately
             minutes += (int)s.songMD.getLength();
@@ -50,11 +51,11 @@ public class Album implements Playable, Comparable<Album>{
         else this.md.length = minutes + ((double) seconds / 100);
     }
 
-    void addTrack(Song s) {
+    public void addTrack(Song s) {
         this.songList.add(s);
     }
 
-    void printMetadata() {
+    public void printMetadata() {
         System.out.println("Name: " + getName());
         System.out.println("Creator: " + creator.getUserMD().getName());
         System.out.println("Date of creation: " + md.getDateOfCreation());

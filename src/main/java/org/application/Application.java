@@ -1,12 +1,16 @@
-package org.example;
+package org.application;
+import org.classes.*;
+import org.exceptions.ObjectNotFoundException;
+import org.exceptions.UnrecognizedInputException;
+
 import java.util.*;
 
 public class Application {
     InputDevice id;
     OutputDevice od;
-    Library library = new Library();
-    UserDatabase userDatabase = new UserDatabase();
-    HashMap<String,List<Playlist>> playlistsMap = new HashMap<>();
+    public Library library = new Library();
+    public UserDatabase userDatabase = new UserDatabase();
+    public HashMap<String,List<Playlist>> playlistsMap = new HashMap<>();
     User connectedUser = new User();
 
     public Application(InputDevice id, OutputDevice od) {
@@ -93,7 +97,6 @@ public class Application {
         while (!exited) {
             for(Album a : library.albums) a.computeTotalLength();
             for(Playlist p : library.playlists) p.computeTotalLength();
-            od.print("");
             library.printAlbums();
             library.printPlaylists();
             od.print("");
@@ -244,7 +247,7 @@ public class Application {
                             for (Playlist p : library.playlists) {
                                 if (p.getName().equals(playlistName)) {
                                     p.addTrack(accessedSong);
-                                    od.print(accessedSong.getName() + " added to " + playlistName);
+                                    od.print(accessedSong.getName() + " added to " + playlistName + '\n');
                                     playlistFound = true;
                                     break;
                                 }

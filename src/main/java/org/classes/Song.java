@@ -1,12 +1,14 @@
-package org.example;
+package org.classes;
 
 import lombok.Getter;
 import lombok.Setter;
+import org.interfaces.Downloadable;
+import org.interfaces.Playable;
 
 @Getter
 @Setter
 public class Song implements Playable, Downloadable, Comparable<Song> {
-    Metadata songMD;
+    public Metadata songMD;
 
     public Song(Metadata songMD) {
         this.songMD = songMD;
@@ -17,10 +19,9 @@ public class Song implements Playable, Downloadable, Comparable<Song> {
 
     public String getName() { return this.songMD.name; }
 
-    void printMetadata() {
+    public void printMetadata() {
         System.out.println("Name: " + songMD.name);
         System.out.println("Length: " + songMD.formattedLength(songMD.length));
-        System.out.println();
     }
     public void play() {
         System.out.println("Song played!\n");

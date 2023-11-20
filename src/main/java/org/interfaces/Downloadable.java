@@ -1,4 +1,4 @@
-package org.example;
+package org.interfaces;
 public interface Downloadable {
     void download();
 }

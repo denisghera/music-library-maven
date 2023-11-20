@@ -1,4 +1,4 @@
-package org.example;
+package org.exceptions;
 
 public class ObjectNotFoundException extends Exception {
     public ObjectNotFoundException(String message) {

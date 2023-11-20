@@ -1,6 +1,5 @@
-package org.example;
+package org.classes;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.util.ArrayList;
@@ -8,8 +7,8 @@ import java.util.List;
 
 @Getter @Setter
 public class Library {
-    List<Album> albums;
-    List<Playlist> playlists;
+    public List<Album> albums;
+    public List<Playlist> playlists;
 
     public Library() {
         this.albums = new ArrayList<>();
