@@ -10,8 +10,8 @@ public class Credentials {
     public String password;
 
     public Credentials() {
-        this.username = "";
-        this.password = "";
+        this.username = null;
+        this.password = null;
     }
 
     public Credentials(String username, String password) {

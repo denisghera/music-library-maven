@@ -1,8 +1,15 @@
 package org.application;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import org.classes.*;
+import org.exceptions.AccessDeniedException;
 import org.exceptions.ObjectNotFoundException;
 import org.exceptions.UnrecognizedInputException;
+import org.threads.FindUserThread;
 
+import java.io.*;
+import java.sql.*;
 import java.util.*;
 
 public class Application {
@@ -19,10 +26,12 @@ public class Application {
     }
 
     void startApplication(String username, String password) {
-        library = id.fetchLibrary("src/main/resources/");
-        userDatabase = id.fetchUserDatabase("src/main/resources/");
-        mapPlaylists();
         try {
+            fetchJSONFromDB("src/main/resources/Library.json", 1);
+            fetchJSONFromDB("src/main/resources/UserDatabase.json", 2);
+            library = id.fetchLibrary("src/main/resources/");
+            userDatabase = id.fetchUserDatabase("src/main/resources/");
+            mapPlaylists();
             connectedUser = findUser(userDatabase.userList, username, password);
             if (connectedUser == null) {
                 throw new ObjectNotFoundException("User " + username + " not found in database!");
@@ -31,17 +40,47 @@ public class Application {
                 mainMenu();
             }
         } catch (ObjectNotFoundException e) {
-            od.print(e.getMessage());
+            System.err.println(e.getMessage());
         }
     }
-    User findUser(List<User> userList, String inputUsername, String inputPassword) {
-        for (User user : userList) {
-            Credentials userCredentials = user.credentials;
-            if (userCredentials.username.equals(inputUsername) && userCredentials.password.equals(inputPassword)) {
-                return user;
+    public static User findUser(List<User> userList, String inputUsername, String inputPassword) {
+        int numThreads = 1; // Number of threads to use
+        int segmentSize = (int) Math.ceil((double) userList.size() / numThreads);
+
+        List<FindUserThread> threads = new ArrayList<>();
+        for (int i = 0; i < numThreads; i++) {
+            int start = i * segmentSize;
+            int end = Math.min((i + 1) * segmentSize, userList.size());
+
+            if (start < end) {
+                List<User> segment = userList.subList(start, end);
+                FindUserThread thread = new FindUserThread(segment, inputUsername, inputPassword);
+                threads.add(thread);
+                thread.start();
             }
         }
+
+        for (FindUserThread thread : threads) {
+            try {
+                thread.join();
+                User foundUser = thread.getResultUser();
+                if (foundUser != null) {
+                    interruptThreadsExcept(threads, thread);
+                    return foundUser;
+                }
+            } catch (InterruptedException e) {
+                Thread.currentThread().interrupt();
+            }
+        }
+
         return null;
+    }
+    private static void interruptThreadsExcept(List<FindUserThread> threads, Thread exceptThread) {
+        for (FindUserThread thread : threads) {
+            if (thread != exceptThread) {
+                thread.interrupt();
+            }
+        }
     }
     public void mapPlaylists() {
         for (Playlist playlist : library.playlists) {
@@ -81,22 +120,21 @@ public class Application {
                         od.print("Closing application...");
                         od.saveLibrary("src/main/resources/", library);
                         od.saveUserDatabase("src/main/resources/", userDatabase);
+                        updateJSONInDB("src/main/resources/Library.json", 1);
+                        updateJSONInDB("src/main/resources/UserDatabase.json", 2);
                         exited = true;
                         break;
                     default:
                         throw new UnrecognizedInputException("Unrecognized keyword: " + input + '\n');
                 }
             } catch (UnrecognizedInputException e) {
-                od.print(e.getMessage());
+                System.err.println(e.getMessage());
             }
         }
     }
-
     public void libraryMenu() {
         boolean exited = false;
         while (!exited) {
-            for(Album a : library.albums) a.computeTotalLength();
-            for(Playlist p : library.playlists) p.computeTotalLength();
             library.printAlbums();
             library.printPlaylists();
             od.print("");
@@ -146,7 +184,7 @@ public class Application {
                         throw new UnrecognizedInputException("Unrecognized keyword: " + input + '\n');
                 }
             } catch (UnrecognizedInputException e) {
-                od.print(e.getMessage());
+                System.err.println(e.getMessage());
             }
         }
     }
@@ -212,7 +250,7 @@ public class Application {
                         throw new UnrecognizedInputException("Unrecognized keyword: " + input + '\n');
                 }
             } catch (UnrecognizedInputException e) {
-                od.print(e.getMessage());
+                System.err.println(e.getMessage());
             }
         }
     }
@@ -246,10 +284,14 @@ public class Application {
                         if (inputWords.length >= 2) {
                             for (Playlist p : library.playlists) {
                                 if (p.getName().equals(playlistName)) {
-                                    p.addTrack(accessedSong);
-                                    od.print(accessedSong.getName() + " added to " + playlistName + '\n');
                                     playlistFound = true;
-                                    break;
+                                    if(p.getCreator().getUserMD().getName().equals(connectedUser.getUserMD().getName())) {
+                                        p.addTrack(accessedSong);
+                                        od.print(accessedSong.getName() + " added to " + playlistName + '\n');
+                                        break;
+                                    } else {
+                                        throw new AccessDeniedException("You are not the creator of this playlist!");
+                                    }
                                 }
                             }
                             if (!playlistFound) {
@@ -266,11 +308,11 @@ public class Application {
                         throw new UnrecognizedInputException("Unrecognized keyword: " + input + '\n');
                 }
             } catch (Exception e) {
-                od.print(e.getMessage());
+                System.err.println(e.getMessage());
             }
         }
     }
-    private static String extractPlaylistName(String[] inputWords) {
+    static String extractPlaylistName(String[] inputWords) {
         StringBuilder playlistName = new StringBuilder();
         boolean inQuotes = false;
 
@@ -284,16 +326,87 @@ public class Application {
                 inQuotes = false;
                 playlistName.append(" ").append(word, 0, word.length() - 1);
                 break;
+            } else if (!inQuotes) {
+                playlistName.append(word);
+                break;
             } else {
-                if (inQuotes) {
-                    playlistName.append(" ").append(word);
-                } else {
-                    playlistName.append(word);
-                }
+                playlistName.append(" ").append(word);
             }
         }
 
         return playlistName.toString();
+    }
+
+    public static void updateJSONInDB(String filename, int rowId) {
+        StringBuilder jsonContent = new StringBuilder();
+        String line;
+        try (BufferedReader br = new BufferedReader(new FileReader(filename))) {
+            while ((line = br.readLine()) != null) {
+                jsonContent.append(line);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+            return;
+        }
+
+        String json = jsonContent.toString();
+
+        String url = "jdbc:jtds:sqlserver://localhost/p3_database";
+        String username = "admin";
+        String password = "complicated_password";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            String sql = "UPDATE dbo.main_table SET data = ? WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setString(1, json);
+            preparedStatement.setInt(2, rowId);
+            preparedStatement.executeUpdate();
+            //System.out.println(filename + " JSON data updated successfully in row " + rowId);
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 18456) {
+                System.err.println("Authentication failed. Check username and password.");
+            } else {
+                e.printStackTrace();
+            }
+        }
+    }
+    public static void fetchJSONFromDB(String filename, int rowId) {
+        String url = "jdbc:jtds:sqlserver://localhost/p3_database";
+        String username = "default_user";
+        String password = "password";
+
+        try (Connection connection = DriverManager.getConnection(url, username, password)) {
+            String sql = "SELECT data FROM dbo.main_table WHERE id = ?";
+            PreparedStatement preparedStatement = connection.prepareStatement(sql);
+            preparedStatement.setInt(1, rowId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            if (resultSet.next()) {
+                String json = resultSet.getString("data");
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
+                Object jsonObject = objectMapper.readValue(json, Object.class);
+                String formattedJson = objectMapper.writeValueAsString(jsonObject);
+
+                try (BufferedWriter writer = new BufferedWriter(new FileWriter(filename))) {
+                    writer.write(formattedJson);
+                    //System.out.println("Data fetched from database and written to " + filename + " for row " + rowId);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                System.err.println("No data found in the database for row " + rowId);
+            }
+        } catch (SQLException e) {
+            if (e.getErrorCode() == 18456) {
+                System.err.println("Authentication failed. Check username and password.");
+            } else {
+                e.printStackTrace();
+            }
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
     }
     public enum SortingOrder {
         ASCENDING, DESCENDING

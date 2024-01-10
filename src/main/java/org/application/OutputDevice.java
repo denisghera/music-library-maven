@@ -1,4 +1,5 @@
 package org.application;
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import org.classes.Library;
@@ -15,7 +16,7 @@ public class OutputDevice {
             PrintStream printStream = new PrintStream(os);
             printStream.println(data);
         } catch(Exception e) {
-            System.out.println("Problem occurred while printing!");
+            System.err.println("Problem occurred while printing!");
         }
     }
 
@@ -24,15 +25,15 @@ public class OutputDevice {
             File libraryFile = new File(folderName + "Library.json");
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-            objectMapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
-            objectMapper.disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
+            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
             objectMapper.writeValue(libraryFile, library);
         } catch(FileNotFoundException e) {
-            System.out.println("Library file not found!");
+            System.err.println("Library file not found!");
         } catch (IOException e) {
-            System.out.println("Problem writing to library file!");
+            System.err.println("Problem writing to library file!");
         } catch (Exception e) {
-            System.out.println("An error occurred while saving the library information!");
+            System.err.println("An error occurred while saving the library information!");
         }
     }
 
@@ -41,15 +42,15 @@ public class OutputDevice {
             File userbaseFile = new File(folderName + "UserDatabase.json");
             ObjectMapper objectMapper = new ObjectMapper();
             objectMapper.enable(SerializationFeature.INDENT_OUTPUT);
-            objectMapper.disable(SerializationFeature.WRITE_NULL_MAP_VALUES);
-            objectMapper.disable(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS);
+            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
+            objectMapper.setSerializationInclusion(JsonInclude.Include.NON_EMPTY);
             objectMapper.writeValue(userbaseFile, userDatabase);
         } catch(FileNotFoundException e) {
-            System.out.println("UserDatabase file not found!");
+            System.err.println("UserDatabase file not found!");
         } catch (IOException e) {
-            System.out.println("Problem writing to user database file!");
+            System.err.println("Problem writing to user database file!");
         } catch (Exception e) {
-            System.out.println("An error occurred while saving the user database!");
+            System.err.println("An error occurred while saving the user database!");
         }
     }
 }

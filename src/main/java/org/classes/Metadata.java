@@ -28,9 +28,9 @@ public class Metadata {
         this.length = length;
     }
     public Metadata() {
-        this.name = "";
-        this.dateOfCreation = "";
-        this.description = "";
+        this.name = null;
+        this.dateOfCreation = null;
+        this.description = null;
         this.length = 0;
     }
     public String formattedLength(double length) {

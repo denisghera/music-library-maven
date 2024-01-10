@@ -1,4 +1,5 @@
 package org.classes;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.interfaces.Playable;
@@ -27,6 +28,7 @@ public class Album implements Playable, Comparable<Album>{
     }
 
     int getNumberOfTracks() { return songList.size(); }
+    @JsonIgnore
     public String getName() { return this.md.getName(); }
 
     public void printTracks() {

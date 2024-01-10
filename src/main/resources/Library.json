@@ -1,52 +1,54 @@
 {
-  "albums" : [
-    {
-      "md" : {
-        "name" : "Album cinstit",
-        "dateOfCreation" : "10/10/1010",
-        "description" : "album description ex"
-      },
-      "songList" : [
-        {
-          "songMD" : {
-            "name" : "Diablo",
-            "length" : 3.14
-          }
-        },
-        {
-          "songMD" : {
-            "name" : "Test song",
-            "length" : 4.53
-          }
-        }
-      ],
-      "creator" : {
-        "userMD" : {
-          "name" : "Killa Fonic"
-        }
+  "albums" : [ {
+    "md" : {
+      "name" : "Album cinstit",
+      "dateOfCreation" : "10/10/1010",
+      "description" : "album description ex",
+      "length" : 8.07
+    },
+    "songList" : [ {
+      "songMD" : {
+        "name" : "Diablo",
+        "length" : 3.14
       }
-    }
-  ],
-  "playlists" : [
-    {
-      "md" : {
-        "name" : "Custom Playlist",
-        "dateOfCreation" : "09/10/2013",
-        "description" : "playlist description ex"
-      },
-      "songList" : [
-        {
-          "songMD" : {
-            "name" : "Test",
-            "length" : 2.16
-          }
-        }
-      ],
-      "creator" : {
-        "userMD" : {
-          "name" : "Cabron"
-        }
+    }, {
+      "songMD" : {
+        "name" : "Test song",
+        "length" : 4.53
       }
+    } ],
+    "creator" : {
+      "userMD" : {
+        "name" : "Killa Fonic",
+        "length" : 0.0
+      },
+      "credentials" : { }
     }
-  ]
+  } ],
+  "playlists" : [ {
+    "md" : {
+      "name" : "Custom Playlist",
+      "dateOfCreation" : "09/10/2013",
+      "description" : "playlist description ex",
+      "length" : 5.3
+    },
+    "songList" : [ {
+      "songMD" : {
+        "name" : "Test",
+        "length" : 2.16
+      }
+    }, {
+      "songMD" : {
+        "name" : "Diablo",
+        "length" : 3.14
+      }
+    } ],
+    "creator" : {
+      "userMD" : {
+        "name" : "Cabron",
+        "length" : 0.0
+      },
+      "credentials" : { }
+    }
+  } ]
 }

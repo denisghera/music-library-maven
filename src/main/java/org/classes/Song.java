@@ -1,5 +1,6 @@
 package org.classes;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.Setter;
 import org.interfaces.Downloadable;
@@ -16,7 +17,7 @@ public class Song implements Playable, Downloadable, Comparable<Song> {
     public Song() {
         this.songMD = new Metadata();
     }
-
+    @JsonIgnore
     public String getName() { return this.songMD.name; }
 
     public void printMetadata() {

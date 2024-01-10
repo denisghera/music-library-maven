@@ -1,8 +1,9 @@
 {
   "userList" : [ {
     "userMD" : {
-      "name" : "Denis",
-      "description" : "example of description"
+      "name" : "Denisace",
+      "description" : "example of description",
+      "length" : 0.0
     },
     "credentials" : {
       "username" : "default_user",
@@ -11,16 +12,18 @@
   }, {
     "userMD" : {
       "name" : "Killa Fonic",
-      "description" : "very versatile artist"
+      "description" : "very versatile artist",
+      "length" : 0.0
     },
     "credentials" : {
       "username" : "artist",
-      "password" : "complicated_password"
+      "password" : "killa_password"
     }
   }, {
     "userMD" : {
       "name" : "Cabron",
-      "description" : "testing user"
+      "description" : "testing user",
+      "length" : 0.0
     },
     "credentials" : {
       "username" : "user123",
