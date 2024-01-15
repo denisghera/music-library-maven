@@ -25,6 +25,24 @@ public class InputDevice{
         }
         return null;
     }
+    public int readInt() {
+        while(true) {
+            String input = scan.nextLine();
+            if(isInt(input)) {
+                return Integer.parseInt(input);
+            } else {
+                System.err.print("Please enter a valid integer number: ");
+            }
+        }
+    }
+    public static boolean isInt(String input) {
+        try {
+            Integer.parseInt(input);
+            return true;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
     public float readFloat() {
         while (true) {
             String input = scan.nextLine();

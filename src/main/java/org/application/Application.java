@@ -150,18 +150,28 @@ public class Application {
                     case "album":
                         if (inputWords.length == 2) {
                             try {
-                                albumMenu(Integer.parseInt(inputWords[1]) - 1, true);
+                                if(InputDevice.isInt(inputWords[1]))
+                                    albumMenu(Integer.parseInt(inputWords[1]) - 1, true);
+                                else {
+                                    System.err.print("Please enter a valid integer number: ");
+                                    albumMenu(id.readInt() - 1,true);
+                                }
                             } catch (IndexOutOfBoundsException e) {
-                                throw new UnrecognizedInputException("Please select a valid number!");
+                                System.err.println("Number out of bounds!");
                             }
                         } else throw new UnrecognizedInputException("Album number not specified!");
                         break;
                     case "playlist":
                         if (inputWords.length == 2) {
                             try {
-                                albumMenu(Integer.parseInt(inputWords[1]) - 1, false);
+                                if(InputDevice.isInt(inputWords[1]))
+                                    albumMenu(Integer.parseInt(inputWords[1]) - 1,false);
+                                else {
+                                    System.err.print("Please enter a valid integer number: ");
+                                    albumMenu(id.readInt() - 1,false);
+                                }
                             } catch (IndexOutOfBoundsException e) {
-                                throw new UnrecognizedInputException("Please select a valid number!");
+                                System.err.println("Number out of bounds!");
                             }
                         } else throw new UnrecognizedInputException("Playlist number not specified!");
                         break;
@@ -215,9 +225,14 @@ public class Application {
                     case "song":
                         if (inputWords.length == 2) {
                             try {
-                                songMenu(accessedAlbum, Integer.parseInt(inputWords[1]) - 1);
+                                if(InputDevice.isInt(inputWords[1]))
+                                    songMenu(accessedAlbum, Integer.parseInt(inputWords[1]) - 1);
+                                else {
+                                    System.err.print("Please enter a valid integer number: ");
+                                    songMenu(accessedAlbum, id.readInt() - 1);
+                                }
                             } catch (IndexOutOfBoundsException e) {
-                                throw new UnrecognizedInputException("Please select a valid number!");
+                                System.err.println("Number out of bounds!");
                             }
                         } else throw new UnrecognizedInputException("Song number not specified!");
                         break;
